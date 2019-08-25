@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
 
 import { TestContext } from '../../data/datagrid/helpers.spec';
 import { IfOpenService } from '../../utils/conditional/if-open.service';
+import { Point } from '../../popover/common/popover';
 
 import { ClrDatepickerViewManager } from './datepicker-view-manager';
 import { DateFormControlService } from './providers/date-form-control.service';
@@ -33,6 +34,17 @@ export default function() {
         DateFormControlService,
       ]);
       viewManagerService = context.getClarityProvider(ViewManagerService);
+    });
+
+    it('supports clrPosition option', () => {
+      expect(context.clarityDirective.position).toBeUndefined();
+      expect((<any>context.clarityDirective).anchorPoint).toEqual(Point.BOTTOM_LEFT);
+      expect((<any>context.clarityDirective).popoverPoint).toEqual(Point.LEFT_TOP);
+
+      context.clarityDirective.position = 'top-right';
+      context.detectChanges();
+      expect((<any>context.clarityDirective).anchorPoint).toEqual(Point.TOP_RIGHT);
+      expect((<any>context.clarityDirective).popoverPoint).toEqual(Point.RIGHT_BOTTOM);
     });
 
     it('shows the daypicker when dayView is set to true', () => {
